@@ -25,7 +25,7 @@ class XMLGenerator:
         cur_node.appendChild(node_data)
 
     def genXml(self):
-        return self.doc.toprettyxml(indent = "\t", newl = "\n", encoding = "utf-8")
+        return str(self.doc.toprettyxml(indent = "\t", newl = "\n", encoding = "utf-8"),encoding="utf8") 
 
 if __name__ == "__main__":
     myXMLGenerator = XMLGenerator();
@@ -75,6 +75,9 @@ if __name__ == "__main__":
     myXMLGenerator.setNodeValue(node_book_02_grade, "good")  
     myXMLGenerator.addNode(node_book_02_grade, node_book_02)  
  
-    myXMLGenerator.addNode(node_book_02, node_book_store) 
-    str1 = str(myXMLGenerator.genXml(),encoding="utf8")
-    print(str1)
+    myXMLGenerator.addNode(node_book_02, node_book_store)
+
+    
+    print(myXMLGenerator.genXml())
+
+    
