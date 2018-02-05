@@ -3,8 +3,7 @@
 from xml.dom.minidom import parse
 import xml.dom.minidom
 
-# 使用minidom解析器打开 XML 文档
-str1 = '''
+str1 = '''<?xml version="1.0" encoding="utf-8"?>
 <collection shelf="New Arrivals">
 <movie title="Enemy Behind">
    <type>War, Thriller</type>
@@ -33,16 +32,18 @@ str1 = '''
 <movie title="Ishtar">
    <type>Comedy</type>
    <format>VHS</format>
-   <rating>PG</rating>
-   <stars>2</stars>
+   <rating>PG_ONE</rating>
+   <stars>1</stars>
    <description>Viewable boredom</description>
 </movie>
 </collection>
 '''
 
 
+#DOMTree = xml.dom.minidom.parseString(str1)
 DOMTree = xml.dom.minidom.parseString(str1)
 collection = DOMTree.documentElement
+
 if collection.hasAttribute("shelf"):
    print ("Root element : %s" % collection.getAttribute("shelf"))
 
@@ -56,7 +57,7 @@ try:
       if movie.hasAttribute("title"):
          print ("Title: %s" % movie.getAttribute("title"))
       
-      type = movie.getElementsByTagName('tye')[0]
+      type = movie.getElementsByTagName('type')[0]
       print ("Type: %s" % type.childNodes[0].data)
       format = movie.getElementsByTagName('format')[0]
       print ("Format: %s" % format.childNodes[0].data)

@@ -25,6 +25,7 @@ class XMLGenerator:
         cur_node.appendChild(node_data)
 
     def genXml(self):
+        #return str(self.doc.toprettyxml(indent = "\t", newl = "\n", encoding = "utf-8"),encoding="utf8") 
         return str(self.doc.toprettyxml(indent = "\t", newl = "\n", encoding = "utf-8"),encoding="utf8") 
 
 if __name__ == "__main__":
