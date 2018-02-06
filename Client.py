@@ -3,7 +3,7 @@ from socket import *
 
 
 def Generator_Xml_Str():
-    myXMLGenerator = Gen.XMLGenerator();
+    myXMLGenerator = Gen.XMLGenerator()
 
     #XML Root Node
     MyLadarScanner = myXMLGenerator.createNode("MyLadarScanner")
@@ -43,14 +43,13 @@ def Generator_Xml_Str():
 
 
     myXMLGenerator.addNode(Initial_Data, MyLadarScanner)  
-
     
     return myXMLGenerator.genXml()
 
 if __name__ == "__main__":
     
     serverName = '127.0.0.1'
-    serverPort = 10023
+    serverPort = 10021
     clientSocket = socket(AF_INET, SOCK_STREAM)
     clientSocket.connect((serverName,serverPort))
     i = input("Please input I :")
@@ -63,11 +62,11 @@ if __name__ == "__main__":
     clientSocket.send(bytes(sentence,encoding="utf8"))
 
     print(str(clientSocket.recv(1024),encoding="utf8"))
-    '''
+    
     while 1:
         str1 = clientSocket.recv(1024)
         print(str(str1,encoding="utf8"))
-    '''
+    
 
     i = input("Please input I :")
     clientSocket.send(bytes(i,encoding="utf8"))

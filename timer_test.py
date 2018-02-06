@@ -1,16 +1,10 @@
 import threading
-import time
 
+def say_sth(str):
+  print (str)
+  t = threading.Timer(2.0, say_sth,[str])
+  t.start()
 
-
-def fun_timer():
-    global timer
-    timer = threading.Timer(0.200, fun_timer)
-    timer.start()
-    print('Hello Timer!')
-    
-timer = threading.Timer(0.200, fun_timer)
-timer.start()
-
-time.sleep(3) # 15秒后停止定时器
-timer.cancel()
+if __name__ == '__main__':
+  timer = threading.Timer(2.0,say_sth,['i am here too.'])
+  timer.start()
