@@ -10,7 +10,7 @@ class MyLadarScanner:
     def Start_Listening(self,Server_Port):
         self.serverSocket = socket(AF_INET,SOCK_STREAM)
         self.serverSocket.bind(('',Server_Port))
-        self.serverSocket.listen()
+        self.serverSocket.listen(1)
         self.Recv_Sign = 0
 
     def Get_Socket_Connect(self):
