@@ -12,7 +12,6 @@ class MyLadarScanner:
         self.serverSocket.bind(('',Server_Port))
         self.serverSocket.listen()
         self.Recv_Sign = 0
-        print ('The server is ready to receive')
 
     def Get_Socket_Connect(self):
         self.connectionSocket, self.addr = self.serverSocket.accept()
@@ -142,7 +141,7 @@ if __name__ == '__main__':
 
     My = MyLadarScanner()
 
-    My.Start_Listening(10021)
+    My.Start_Listening(10020)
    
     while True:
 
@@ -156,7 +155,6 @@ if __name__ == '__main__':
         if My.Rec_Str == '':
             My.Stop_Listening()
             continue
-        print(My.Rec_Str)
         My.Send_Socket_Data("Server side is ready")
 
 
@@ -172,16 +170,10 @@ if __name__ == '__main__':
         Xml_Str = My.Rec_Str
 
         if My.Sep_Initial_Data(Xml_Str) == 1 :
-            print(My.Height)
-            print(My.Km_Sign)
-            print(My.Timing)
-            print(My.Dis_Start)
-            print(My.Dis_End)
-            print(My.Cur_Start)
-            print(My.Cur_End)
-            My.Send_Socket_Data("Success")
+            pass
         else:
-            print("ERROR")
+            My.Send_Socket_Data("Error")
+            continue
         
 
         t = threading.Thread(target = My.Check_Recv_Str,args=(1024,))
@@ -191,11 +183,10 @@ if __name__ == '__main__':
             time.sleep(My.Timing)
 
         My.Recv_Sign = 0
+        My.Send_Socket_Data("Server side is closed")
         if My.Rec_Str == '':
             My.Stop_Listening()
             continue
-        print(My.Rec_Str)
-
 
         My.Stop_Listening()
 

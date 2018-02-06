@@ -49,7 +49,7 @@ def Generator_Xml_Str():
 if __name__ == "__main__":
     
     serverName = '127.0.0.1'
-    serverPort = 10021
+    serverPort = 10020
     clientSocket = socket(AF_INET, SOCK_STREAM)
     clientSocket.connect((serverName,serverPort))
     i = input("Please input I :")
@@ -63,14 +63,17 @@ if __name__ == "__main__":
 
     print(str(clientSocket.recv(1024),encoding="utf8"))
     
-    while 1:
+    t=0
+
+    while t<10:
         str1 = clientSocket.recv(1024)
         print(str(str1,encoding="utf8"))
-    
+        t = t+1
 
     i = input("Please input I :")
     clientSocket.send(bytes(i,encoding="utf8"))
 
+    print(str(clientSocket.recv(1024),encoding="utf8"))
     print(str(clientSocket.recv(1024),encoding="utf8"))
     #clientSocket.send(bytes('asd',encoding="utf8"))
     
