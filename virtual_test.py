@@ -68,8 +68,8 @@ class MyLadarScanner:
 
     def Send_All_Data(self):
         self.speed = 15.0
-        self.lachu1 = self.Get_Next_Lachu1(self.lachu1)
-        self.lachu2 = self.Get_Next_Lachu2(self.lachu2)
+        self.lachu1 = self.Get_Next_Lachu1(self.lachu1) + random.randint(-15,15)
+        self.lachu2 = self.Get_Next_Lachu2(self.lachu2) + random.randint(-15,15)
         self.daogao1 = self.daogao1 + random.randint(-30,30)
         self.daogao2 = self.daogao2 + random.randint(-30,30)
         self.speed = self.speed + random.randint(-15,15)

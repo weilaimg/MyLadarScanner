@@ -48,7 +48,7 @@ def Generator_Xml_Str():
 
 if __name__ == "__main__":
     
-    serverName = '192.168.0.200'
+    serverName = 'weilaimg.cn'
     serverPort = 10020
     clientSocket = socket(AF_INET, SOCK_STREAM)
     clientSocket.connect((serverName,serverPort))
