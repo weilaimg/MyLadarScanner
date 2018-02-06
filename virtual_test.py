@@ -70,10 +70,16 @@ if __name__ == '__main__':
     My.Start_Listening()
     My.Get_Socket_Connect()
 
-    Xml_Str = My.Get_Recv_Str(1024)
+    t = threading.Thread(target = My.Check_Recv_Str,args=(1024,))
+    t.start()
+    while My.Recv_Sign == 0:
+        pass
+    My.Recv_Sign = 0
+
+    Xml_Str = My.Rec_Str
 
     if My.Sep_Initial_Data(Xml_Str) == 1 :
-        print(My.Height)
+        print("Height=%s"%My.Height)
         print(My.Km_Sign)
         print(My.Timing)
         print(My.Dis_Start)
@@ -89,6 +95,8 @@ if __name__ == '__main__':
 
     while My.Recv_Sign == 0:
         pass
+    My.Recv_Sign = 0
+
     print(My.Rec_Str)
 
 
