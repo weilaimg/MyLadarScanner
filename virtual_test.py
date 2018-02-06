@@ -179,11 +179,17 @@ if __name__ == '__main__':
         t = threading.Thread(target = My.Check_Recv_Str,args=(1024,))
         t.start()
         while My.Recv_Sign == 0:
-            My.Send_All_Data()
-            time.sleep(My.Timing)
+            try:
+                My.Send_All_Data()
+                time.sleep(My.Timing)
+            except:
+                pass
 
         My.Recv_Sign = 0
-        My.Send_Socket_Data("Server side is closed")
+        try:
+            My.Send_Socket_Data("Server side is closed")
+        except:
+            pass
         if My.Rec_Str == '':
             My.Stop_Listening()
             continue
