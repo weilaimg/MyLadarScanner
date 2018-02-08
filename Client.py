@@ -1,54 +1,21 @@
-import XMLGenerator as Gen
 from socket import *
+import json
 
-
-def Generator_Xml_Str():
-    myXMLGenerator = Gen.XMLGenerator()
-
-    #XML Root Node
-    MyLadarScanner = myXMLGenerator.createNode("MyLadarScanner")
-    myXMLGenerator.setNodeAttr(MyLadarScanner,"From","Android Client")
-    myXMLGenerator.addNode(node = MyLadarScanner)
-
-    #book01
-    Initial_Data = myXMLGenerator.createNode("Initial_Data")
-
-    Height = myXMLGenerator.createNode("Height")
-    myXMLGenerator.setNodeValue(Height,"40")
-    myXMLGenerator.addNode(Height,Initial_Data)
-
-    Km_Sign = myXMLGenerator.createNode("Km_Sign")
-    myXMLGenerator.setNodeValue(Km_Sign,"0")
-    myXMLGenerator.addNode(Km_Sign,Initial_Data)
-
-    Timing = myXMLGenerator.createNode("Timing")
-    myXMLGenerator.setNodeValue(Timing,"200")
-    myXMLGenerator.addNode(Timing,Initial_Data)
-
-    Dis_Start = myXMLGenerator.createNode("Dis_Start")
-    myXMLGenerator.setNodeValue(Dis_Start,"2.0")
-    myXMLGenerator.addNode(Dis_Start,Initial_Data)
-
-    Dis_End = myXMLGenerator.createNode("Dis_End")
-    myXMLGenerator.setNodeValue(Dis_End,"4.0")
-    myXMLGenerator.addNode(Dis_End,Initial_Data)
-
-    Cur_Start = myXMLGenerator.createNode("Cur_Start")
-    myXMLGenerator.setNodeValue(Cur_Start,"60")
-    myXMLGenerator.addNode(Cur_Start,Initial_Data)
-
-    Cur_End = myXMLGenerator.createNode("Cur_End")
-    myXMLGenerator.setNodeValue(Cur_End,"120")
-    myXMLGenerator.addNode(Cur_End,Initial_Data)
-
-
-    myXMLGenerator.addNode(Initial_Data, MyLadarScanner)  
+def Generator_Json_Str():
+    Json_Dic = {'Height':20,
+                'Km_Sign':1500,
+                'Timing':300,
+                'Dis_Start':2.0,
+                'Dis_End':4.0,
+                'Cur_Start':60,
+                'Cur_End':120
+                }
     
-    return myXMLGenerator.genXml()
+    return json.dumps(Json_Dic)
 
 if __name__ == "__main__":
     
-    serverName = 'weilaimg.cn'
+    serverName = '127.0.0.1'
     serverPort = 10020
     clientSocket = socket(AF_INET, SOCK_STREAM)
     clientSocket.connect((serverName,serverPort))
@@ -57,15 +24,15 @@ if __name__ == "__main__":
 
     print(str(clientSocket.recv(1024),encoding="utf8"))
 
-    sentence = Generator_Xml_Str()
-
+    sentence = Generator_Json_Str()
+    print(sentence)
     clientSocket.send(bytes(sentence,encoding="utf8"))
 
     print(str(clientSocket.recv(1024),encoding="utf8"))
     
     t=0
 
-    while t<10:
+    while 1:
         str1 = clientSocket.recv(1024)
         print(str(str1,encoding="utf8"))
         t = t+1

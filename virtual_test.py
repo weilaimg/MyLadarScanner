@@ -1,9 +1,7 @@
 from socket import *
 import threading 
 import time 
-import xml.dom.minidom
-import XMLGenerator as Gen
-
+import json
 import random
 
 class MyLadarScanner:
@@ -44,19 +42,17 @@ class MyLadarScanner:
         self.Cur_Start = Cur_Start
         self.Cur_End = Cur_End
 
-    def Sep_Initial_Data(self,Xml_Str):
+    def Sep_Initial_Data(self,Json_Str):
         flag = 0
         try:
-            DOMTree = xml.dom.minidom.parseString(Xml_Str)
-            MyLadarScanner = DOMTree.documentElement
-            Initial_Data = MyLadarScanner.getElementsByTagName("Initial_Data")[0]
-            Height = int(Initial_Data.getElementsByTagName("Height")[0].childNodes[0].data)
-            Km_Sign = float(Initial_Data.getElementsByTagName("Km_Sign")[0].childNodes[0].data)
-            Timing = float(Initial_Data.getElementsByTagName("Timing")[0].childNodes[0].data)/1000
-            Dis_Start = float(Initial_Data.getElementsByTagName("Dis_Start")[0].childNodes[0].data)
-            Dis_End = float(Initial_Data.getElementsByTagName("Dis_End")[0].childNodes[0].data)
-            Cur_Start = int(Initial_Data.getElementsByTagName("Cur_Start")[0].childNodes[0].data)
-            Cur_End = int(Initial_Data.getElementsByTagName("Cur_End")[0].childNodes[0].data)
+            Json_Dic = json.loads(Json_Str)
+            Height = Json_Dic['Height']
+            Km_Sign = float(Json_Dic['Km_Sign'])
+            Timing = float(Json_Dic['Timing'])/1000
+            Dis_Start = Json_Dic['Dis_Start']
+            Dis_End = Json_Dic['Dis_End']
+            Cur_Start = Json_Dic['Cur_Start']
+            Cur_End = Json_Dic['Cur_End']
             flag = 1
             self.Set_Init_Data(Height,Km_Sign,Timing,Dis_Start,Dis_End,Cur_Start,Cur_End)
         except:
@@ -72,9 +68,9 @@ class MyLadarScanner:
         self.lachu2 = self.Get_Next_Lachu2(self.lachu2) + random.randint(-15,15)
         self.daogao1 = self.daogao1 + random.randint(-30,30)
         self.daogao2 = self.daogao2 + random.randint(-30,30)
-        self.speed = self.speed + random.randint(-15,15)
+        self.speed = self.speed + float(random.randint(-15,15))/3
         self.Km_Sign = self.Km_Sign + self.speed*self.Timing
-        Send_Data = self.Gen_Send_Xml()
+        Send_Data = self.Gen_Send_Json()
         self.Send_Socket_Data(Send_Data)
 
     def Get_Next_Lachu1(self,i):
@@ -99,43 +95,14 @@ class MyLadarScanner:
         else :
             return i+15
 
-    def Gen_Send_Xml(self):
-        myXMLGenerator = Gen.XMLGenerator()
-        #XML Root Node
-        MyLadarScanner = myXMLGenerator.createNode("MyLadarScanner")
-        myXMLGenerator.setNodeAttr(MyLadarScanner,"From","Linux Server")
-        myXMLGenerator.addNode(node = MyLadarScanner)
-
-        #book01
-        Measured_Data = myXMLGenerator.createNode("Measured_Data")
-
-        lachu1 = myXMLGenerator.createNode("lachu1")
-        myXMLGenerator.setNodeValue(lachu1,str(self.lachu1))
-        myXMLGenerator.addNode(lachu1,Measured_Data)
-
-        lachu2 = myXMLGenerator.createNode("lachu2")
-        myXMLGenerator.setNodeValue(lachu2,str(self.lachu2))
-        myXMLGenerator.addNode(lachu2,Measured_Data)
-
-        daogao1 = myXMLGenerator.createNode("daogao1")
-        myXMLGenerator.setNodeValue(daogao1,str(self.daogao1))
-        myXMLGenerator.addNode(daogao1,Measured_Data)
-
-        daogao2 = myXMLGenerator.createNode("daogao2")
-        myXMLGenerator.setNodeValue(daogao2,str(self.daogao2))
-        myXMLGenerator.addNode(daogao2,Measured_Data)
-
-        speed = myXMLGenerator.createNode("speed")
-        myXMLGenerator.setNodeValue(speed,str("%.2f"%self.speed))
-        myXMLGenerator.addNode(speed,Measured_Data)
-
-        Km_Sign = myXMLGenerator.createNode("Km_Sign")
-        myXMLGenerator.setNodeValue(Km_Sign,str("%.2f"%self.Km_Sign))
-        myXMLGenerator.addNode(Km_Sign,Measured_Data)
-
-        myXMLGenerator.addNode(Measured_Data, MyLadarScanner)  
-        
-        return myXMLGenerator.genXml()
+    def Gen_Send_Json(self):
+        Json_Dic = {'lachu1':self.lachu1,
+                    'lachu2':self.lachu2,
+                    'daogao1':self.daogao1,
+                    'daogao2':self.daogao2,
+                    'speed':float(str("%.2f"%self.speed)),
+                    'Km_Sign':float(str("%.2f"%self.Km_Sign))}
+        return json.dumps(Json_Dic)
 
 if __name__ == '__main__':
 
@@ -167,9 +134,9 @@ if __name__ == '__main__':
         if My.Rec_Str == '':
             My.Stop_Listening()
             continue
-        Xml_Str = My.Rec_Str
+        Json_Str = My.Rec_Str
 
-        if My.Sep_Initial_Data(Xml_Str) == 1 :
+        if My.Sep_Initial_Data(Json_Str) == 1 :
             pass
         else:
             My.Send_Socket_Data("Error")
