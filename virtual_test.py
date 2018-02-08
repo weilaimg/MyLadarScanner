@@ -140,6 +140,7 @@ if __name__ == '__main__':
             pass
         else:
             My.Send_Socket_Data("Error")
+            My.Stop_Listening()
             continue
         
 
