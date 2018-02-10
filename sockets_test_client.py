@@ -4,17 +4,12 @@ def Hex_To_Dec(dhex):
     dec = 0
     i=0
     while dhex[i]!='\0':
-        print(dhex[i],end='')
-        i = i+1
-    i=0
-    while dhex[i]!='\0':
         dhex[i] = str(dhex[i])
         if (dhex[i]>='0' and dhex[i]<='9'):
             dec = dec*16+int(dhex[i])
         if(dhex[i]>='A' and dhex[i]<='F'):
             dec = dec*16+int(ord(dhex[i])-ord('A')+10)
         i=i+1
-    print(' ')
     return dec
 
 
@@ -44,7 +39,6 @@ while span_num<1141:
         hex_loc=hex_loc+1
     else:
         span_num = span_num+1
-        #hex_loc = hex_loc+1
         hex_value[hex_loc]='\0'
 
         hex_loc = 0
