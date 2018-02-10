@@ -1,5 +1,5 @@
 from socket import *
-
+import math
 def Hex_To_Dec(dhex):
     dec = 0
     i=0
@@ -29,7 +29,7 @@ span_num = 0
 hex_loc = 0
 poi_loc = 0
 hex_value  = ['','','','','','']
-
+Point_List=[]
 while span_num<1141:
     RecvBuf = str(clientSocket.recv(1),encoding='utf8')
     if(RecvBuf != ' '):
@@ -46,7 +46,21 @@ while span_num<1141:
         hex_loc = 0
         now_dis = Hex_To_Dec(hex_value)
 
-        print("Cur = %f , Dis = %d"%(now_cur,now_dis))
+        now_dagao = now_dis*math.sin(now_cur*(math.pi/180))
+        now_lachu = now_dis*math.cos(now_cur*(math.pi/180))
+        
+        if now_dis>3000 and now_dis<3200 and now_cur>60 and now_cur<120:
+            Point_dic=dict()
+            Point_dic['now_dis']=now_dis
+            Point_dic['now_cur']=now_cur
+            Point_dic['now_dagao']=now_dagao
+            Point_dic['now_lachu']=now_lachu
+            Point_List.append(Point_dic)
+print(Point_List)
+if len(Point_List)>45 or len(Point_List)==0:
+    pass
+else:
+    pass
 
 
 clientSocket.close()
