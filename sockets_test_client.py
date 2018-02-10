@@ -4,7 +4,6 @@ def Hex_To_Dec(dhex):
     dec = 0
     i=0
     while dhex[i]!='\0':
-        dhex[i] = str(dhex[i])
         if (dhex[i]>='0' and dhex[i]<='9'):
             dec = dec*16+int(dhex[i])
         if(dhex[i]>='A' and dhex[i]<='F'):
@@ -24,13 +23,12 @@ clientSocket.send(bytes(sentence,encoding="utf8"))
 i = 0
 while (i <= 123):
     str1 = clientSocket.recv(1)
-    print(str(str1,encoding="utf8"),end=''),
     i=i+1
 
 span_num = 0
 hex_loc = 0
 poi_loc = 0
-hex_value  = [0,1,2,3,4,5]
+hex_value  = ['','','','','','']
 
 while span_num<1141:
     RecvBuf = str(clientSocket.recv(1),encoding='utf8')

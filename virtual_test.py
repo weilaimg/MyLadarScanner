@@ -49,8 +49,8 @@ class MyLadarScanner:
             Height = Json_Dic['Height']
             Km_Sign = float(Json_Dic['Km_Sign'])
             Timing = float(Json_Dic['Timing'])/1000
-            Dis_Start = Json_Dic['Dis_Start']
-            Dis_End = Json_Dic['Dis_End']
+            Dis_Start = Json_Dic['Dis_Start']*1000
+            Dis_End = Json_Dic['Dis_End']*1000
             Cur_Start = Json_Dic['Cur_Start']
             Cur_End = Json_Dic['Cur_End']
             flag = 1
@@ -103,6 +103,8 @@ class MyLadarScanner:
                     'speed':float(str("%.2f"%self.speed)),
                     'Km_Sign':float(str("%.2f"%self.Km_Sign))}
         return json.dumps(Json_Dic)
+
+
 
 if __name__ == '__main__':
 
